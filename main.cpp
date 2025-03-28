@@ -16,7 +16,7 @@ int generateRandomNumber(int min = 0, int max = 100) {
 auto test(int number_count, int iteration_count)
 {
     std::vector<int> vec(number_count);
-    std::array<std::pair<std::chrono::milliseconds, std::pair<int, int>>, 40> results{};
+    std::array<std::pair<std::chrono::nanoseconds, std::pair<int, int>>, 40> results{};
 
     for (int i = 0; i < iteration_count; i++)
     {
@@ -34,7 +34,7 @@ auto test(int number_count, int iteration_count)
                 else            results[ind].second.second++;
             }
 
-            results[ind].first += std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+            results[ind].first += std::chrono::high_resolution_clock::now() - start;
         }
     }
 
@@ -61,7 +61,7 @@ auto test(int number_count, int iteration_count)
                 else            results[ind].second.second++;
             }
 
-            results[ind].first += std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+            results[ind].first += std::chrono::high_resolution_clock::now() - start;
         }
     }
     
@@ -86,13 +86,13 @@ int main(int argc, char* argv[])
     for (int i = 0; i < 21; i++)
     {
         auto [time, sum] = results[i];
-        std::cout << std::format("Probability of branch false: {:>3}%, time: {:>6}. Evaluated: false {} times, true {} times.\n", i * 5, time, sum.second, sum.first);
+        std::cout << std::format("Probability of branch false: {:>3}%, time: {:>6}. Evaluated: false {} times, true {} times.\n", i * 5, std::chrono::duration_cast<std::chrono::milliseconds>(time), sum.second, sum.first);
     }
 
     for (int i = 21; i < 40; i++)
     {
         auto [time, sum] = results[i];
-        std::cout << std::format("Pattern:   {:>2} false    {:>2} true   , time: {:>6}. Evaluated: false {} times, true {} times.\n", std::max(31 - i, 1), std::max(i - 29, 1), time, sum.second, sum.first);
+        std::cout << std::format("Pattern:   {:>2} false    {:>2} true   , time: {:>6}. Evaluated: false {} times, true {} times.\n", std::max(31 - i, 1), std::max(i - 29, 1), std::chrono::duration_cast<std::chrono::milliseconds>(time), sum.second, sum.first);
     }
 
     return 0;
